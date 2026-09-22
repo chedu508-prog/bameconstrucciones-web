@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAMEC - Albañilería y Reformas</title>
+<style>
+  :root {
+    --azul-oscuro: #1a2a3a;
+    --azul: #2c5282;
+    --naranja: #dd6b20;
+    --gris-claro: #f7fafc;
+    --gris-medio: #718096;
+    --blanco: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #2d3748; }
+  a { text-decoration: none; color: inherit; }
+  ul { list-style: none; }
+
+  header {
+    background: var(--azul-oscuro);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 20px;
+  }
+  .logo { color: var(--blanco); font-size: 1.5rem; font-weight: bold; display: flex; align-items: baseline; }
+  .logo span { color: var(--naranja); font-size: 1.7rem; }
+  .logo small { color: var(--blanco); font-weight: 500; font-size: 1rem; margin-left: 2px; letter-spacing: 0.5px; }
+  .nav-links { display: flex; gap: 30px; }
+  .nav-links a { color: var(--blanco); font-weight: 500; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--naranja); }
+  .menu-toggle { display: none; color: var(--blanco); font-size: 1.8rem; background: none; border: none; cursor: pointer; }
+
+  .hero {
+    margin-top: 70px;
+    background: linear-gradient(rgba(26,42,58,0.75), rgba(26,42,58,0.75)),
+                url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    color: var(--blanco);
+    padding: 120px 20px;
+    text-align: center;
+  }
+  .hero h1 { font-size: 2.8rem; margin-bottom: 20px; }
+  .hero p { font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px; color: #e2e8f0; }
+  .btn {
+    display: inline-block;
+    background: var(--naranja);
+    color: var(--blanco);
+    padding: 14px 32px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  .btn:hover { background: #c05621; transform: translateY(-2px); }
+
+  section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+  .section-title { text-align: center; margin-bottom: 50px; }
+  .section-title h2 { font-size: 2.2rem; color: var(--azul-oscuro); margin-bottom: 10px; }
+  .section-title p { color: var(--gris-medio); }
+  .section-title span { color: var(--naranja); }
+
+  .servicios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+  }
+  .servicio-card {
+    background: var(--blanco);
+    padding: 35px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.3s;
+  }
+  .servicio-card:hover { transform: translateY(-8px); }
+  .servicio-card .icono { font-size: 2.5rem; margin-bottom: 15px; }
+  .servicio-card h3 { color: var(--azul-oscuro); margin-bottom: 12px; }
+  .servicio-card p { color: var(--gris-medio); font-size: 0.95rem; }
+
+  .portfolio { background: var(--gris-claro); }
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+  }
+  .portfolio-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 250px;
+    background: #cbd5e0;
+  }
+  .portfolio-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .portfolio-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: var(--blanco);
+    padding: 20px;
+    font-weight: bold;
+  }
+
+  .sobre-nosotros {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .sobre-texto p { color: var(--gris-medio); margin-bottom: 20px; }
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
+  .stat-box { text-align: center; background: var(--gris-claro); padding: 20px; border-radius: 10px; }
+  .stat-box .numero { font-size: 2.2rem; font-weight: bold; color: var(--naranja); }
+  .stat-box .etiqueta { color: var(--gris-medio); font-size: 0.9rem; }
+  .sobre-imagen img { width: 100%; border-radius: 10px; }
+
+  .cta {
+    background: var(--azul);
+    color: var(--blanco);
+    text-align: center;
+    padding: 70px 20px;
+  }
+  .cta h2 { font-size: 2rem; margin-bottom: 15px; }
+  .cta p { margin-bottom: 25px; color: #e2e8f0; }
+
+  .contacto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+  }
+  .contacto-info div { margin-bottom: 25px; }
+  .contacto-info h4 { color: var(--azul-oscuro); margin-bottom: 5px; }
+  .contacto-info p { color: var(--gris-medio); }
+  form { display: flex; flex-direction: column; gap: 15px; }
+  input, textarea {
+    padding: 12px 15px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  textarea { resize: vertical; min-height: 120px; }
+
+  footer {
+    background: var(--azul-oscuro);
+    color: #a0aec0;
+    text-align: center;
+    padding: 25px 20px;
+    font-size: 0.9rem;
+  }
+
+  .whatsapp-float {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #25D366;
+    color: var(--blanco);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 999;
+    transition: transform 0.3s;
+  }
+  .whatsapp-float:hover { transform: scale(1.1); }
+
+  @media (max-width: 768px) {
+    .nav-links {
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      background: var(--azul-oscuro);
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      display: none;
+    }
+    .nav-links.active { display: flex; }
+    .menu-toggle { display: block; }
+    .hero h1 { font-size: 2rem; }
+    .sobre-nosotros, .contacto-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">BAME<span>C</span> <small>onstrucciones</small></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+  </nav>
+</header>
+
+<section class="hero" id="inicio">
+  <h1>Albañilería y Reformas de Confianza</h1>
+  <p>Más de [X] años transformando espacios en Torrent y toda la Comunidad Valenciana. Calidad, seriedad y buen precio en cada proyecto.</p>
+  <a href="#contacto" class="btn">Pide tu presupuesto gratis</a>
+</section>
+
+<section id="servicios">
+  <div class="section-title">
+    <h2>Nuestros <span>Servicios</span></h2>
+    <p>Soluciones completas para tu hogar o negocio</p>
+  </div>
+  <div class="servicios-grid">
+    <div class="servicio-card">
+      <div class="icono">🧱</div>
+      <h3>Albañilería General</h3>
+      <p>Construcción, tabiquería, alicatados y trabajos de obra civil con acabados de calidad.</p>
+    </div>
+    <div class="servicio-card">
+      <div class="icono">🛁</div>
+      <h3>Reforma de Baños</h3>
+      <p>Renovación integral de baños: fontanería, alicatado, mampara y saneamientos.</p>
+    </div>
+    <div class="servicio-card">
+      <div class="icono">🍳</div>
+      <h3>Reforma de Cocinas</h3>
+      <p>Diseño y ejecución completa de cocinas funcionales y modernas.</p>
+    </div>
+    <div class="servicio-card">
+      <div class="icono">🏠</div>
+      <h3>Reformas Integrales</h3>
+      <p>Rehabilitación completa de viviendas, de la estructura al último detalle.</p>
+    </div>
+    <div class="servicio-card">
+      <div class="icono">🎨</div>
+      <h3>Pintura y Acabados</h3>
+      <p>Pintura interior y exterior, alisados y tratamientos decorativos.</p>
+    </div>
+    <div class="servicio-card">
+      <div class="icono">🔧</div>
+      <h3>Mantenimiento</h3>
+      <p>Pequeñas reparaciones y mantenimiento general para comunidades y particulares.</p>
+    </div>
+  </div>
+</section>
+
+<section class="portfolio" id="portfolio">
+  <div class="section-title">
+    <h2>Nuestros <span>Trabajos</span></h2>
+    <p>Algunos de los proyectos que hemos realizado</p>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-item">
+      <img src="imagenes/trabajo1.jpg" alt="Reforma de baño completa" onerror="this.style.display='none'">
+      <div class="portfolio-overlay">Reforma de baño completa</div>
+    </div>
+    <div class="portfolio-item">
+      <img src="imagenes/trabajo2.jpg" alt="Cocina reformada" onerror="this.style.display='none'">
+      <div class="portfolio-overlay">Cocina reformada</div>
+    </div>
+    <div class="portfolio-item">
+      <img src="imagenes/trabajo3.jpg" alt="Reforma integral de vivienda" onerror="this.style.display='none'">
+      <div class="portfolio-overlay">Reforma integral de vivienda</div>
+    </div>
+  </div>
+</section>
+
+<section class="sobre-nosotros" id="nosotros">
+  <div class="sobre-texto">
+    <div class="section-title" style="text-align:left;">
+      <h2>Sobre <span>Nosotros</span></h2>
+    </div>
+    <p>Somos una empresa familiar de albañilería y reformas con base en Torrent, comprometida con la calidad y la puntualidad en cada obra.</p>
+    <p>Trabajamos con materiales de primera calidad y un equipo de profesionales de confianza para garantizar resultados duraderos y acabados impecables.</p>
+    <div class="stats">
+      <div class="stat-box">
+        <div class="numero">[X]+</div>
+        <div class="etiqueta">Años de experiencia</div>
+      </div>
+      <div class="stat-box">
+        <div class="numero">[X]+</div>
+        <div class="etiqueta">Proyectos realizados</div>
+      </div>
+      <div class="stat-box">
+        <div class="numero">100%</div>
+        <div class="etiqueta">Clientes satisfechos</div>
+      </div>
+      <div class="stat-box">
+        <div class="numero">24h</div>
+        <div class="etiqueta">Respuesta rápida</div>
+      </div>
+    </div>
+  </div>
+  <div class="sobre-imagen">
+    <img src="imagenes/equipo.jpg" alt="Equipo de trabajo" onerror="this.style.display='none'">
+  </div>
+</section>
+
+<div class="cta">
+  <h2>¿Tienes un proyecto en mente?</h2>
+  <p>Contáctanos hoy mismo y te asesoramos sin compromiso</p>
+  <a href="#contacto" class="btn">Solicitar presupuesto</a>
+</div>
+
+<section id="contacto">
+  <div class="section-title">
+    <h2>Contacta <span>con Nosotros</span></h2>
+    <p>Estamos aquí para ayudarte con tu próximo proyecto</p>
+  </div>
+  <div class="contacto-grid">
+    <div class="contacto-info">
+      <div>
+        <h4>📍 Ubicación</h4>
+        <p>Torrent, Comunidad Valenciana</p>
+      </div>
+      <div>
+        <h4>📞 Teléfono</h4>
+        <p>[Tu teléfono aquí]</p>
+      </div>
+      <div>
+        <h4>✉️ Email</h4>
+        <p>[Tu email aquí]</p>
+      </div>
+      <div>
+        <h4>🕒 Horario</h4>
+        <p>Lunes a Viernes: 8:00 - 18:00</p>
+      </div>
+    </div>
+    <form id="contactForm">
+      <input type="text" placeholder="Tu nombre" required>
+      <input type="tel" placeholder="Tu teléfono" required>
+      <input type="email" placeholder="Tu email" required>
+      <textarea placeholder="Cuéntanos tu proyecto..." required></textarea>
+      <button type="submit" class="btn">Enviar mensaje</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 BAMEC. Todos los derechos reservados.</p>
+</footer>
+
+<a href="https://wa.me/34600000000" class="whatsapp-float" target="_blank" title="Escríbenos por WhatsApp">💬</a>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => navLinks.classList.remove('active'));
+  });
+
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Gracias por tu mensaje. Nos pondremos en contacto contigo lo antes posible.\n\n(Para que este formulario envíe correos reales, conéctalo a un servicio como Formspree)');
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
